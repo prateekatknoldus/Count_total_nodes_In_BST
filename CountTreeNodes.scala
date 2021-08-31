@@ -1,25 +1,18 @@
-case class Node(data: Int) {
-  var left: Node = null
-  var right: Node = null
-}
+case class Node(data: Int, left: Option[Node], right: Option[Node])
 
 object CountTreeNodes extends App {
 
-  def countNoOfNodes(root: Node): Int = {
-    if (root == null) 0
-    else countNoOfNodes(root.left) + countNoOfNodes(root.right) + 1
+  def countNodes(rootOption: Option[Node]): Int = rootOption match {
+    case None => 0
+    case Some(root) => countNodes(root.left) + countNodes(root.right) + 1
   }
 
-  val root = Node(50)
+  val root = Node(
+                  50,
+                  Some(Node(40, Some(Node(20, None, None)), Some(Node(45, None, None)))),
+                  Some(Node(80, Some(Node(55,None, None)), Some(Node(90, Some(Node(70, None, None)) , None))))
+                 )
 
-  root.left = Node(40)
-  root.left.left = Node(35)
-  root.left.right = Node(45)
-
-  root.right = Node(60)
-  root.right.left = Node(55)
-  root.right.right = Node(65)
-
-  println(s"No. of nodes in the tree = ${CountTreeNodes.countNoOfNodes(root)}")
+  println(s"No. of nodes in the tree = ${CountTreeNodes.countNodes(Some(root))}")
 }
 
